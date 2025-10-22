@@ -17,40 +17,6 @@ It demonstrates a full production workflow — from **data ingestion**, **valida
 
 ---
 
-### 🏗️ Project Structure
-networksecurity/
-│
-├── data_schema/ # Schema definitions for data validation
-├── final_model/ # Final trained and serialized models
-├── mlruns/ # MLflow experiment tracking logs
-├── Network_Data/ # Raw network dataset
-├── networksecurity/ # Main package (components, utils, entities)
-│ ├── components/ # ETL + model training components
-│ ├── utils/ # Helper utilities (data, model, metrics)
-│ ├── entity/ # Config and artifact entities
-│ ├── exception/ # Custom exception handling
-│ ├── logging/ # Centralized logger
-│ └── pipeline/ # Training & prediction pipelines
-│
-├── prediction_output/ # Model inference outputs
-├── templates/ # Web UI (Flask templates)
-├── valid_data/ # Clean validated data
-│
-├── app.py # Flask web app entry point
-├── main.py # Training pipeline trigger
-├── push_data.py # Data push/ingestion trigger
-├── Dockerfile # For containerized deployment
-├── requirements.txt # Python dependencies
-├── setup.py # Package setup script
-├── .env # Environment variables
-├── .gitignore # Git ignore rules
-└── README.md # Project documentation
-
-yaml
-Copy code
-
----
-
 ### 🧩 Tech Stack
 - **Language:** Python 3.12  
 - **Frameworks/Libraries:** scikit-learn, pandas, numpy, mlflow, flask  
@@ -119,3 +85,4 @@ CI/CD setup using GitHub Actions
 Model registry with MLflow
 
 API Gateway + Streamlit Dashboard
+
