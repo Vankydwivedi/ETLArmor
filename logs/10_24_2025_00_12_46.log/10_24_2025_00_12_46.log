@@ -1,0 +1,26 @@
+[ 2025-10-24 00:12:56,234 ] 41 root - INFO - Start data Ingestion
+[ 2025-10-24 00:13:00,409 ] 65 root - INFO - Performed train test split on the dataframe
+[ 2025-10-24 00:13:00,409 ] 67 root - INFO - Exited split_data_as_train_test method of Data_Ingestion class
+[ 2025-10-24 00:13:00,414 ] 75 root - INFO - Exporting train and test file path.
+[ 2025-10-24 00:13:00,455 ] 84 root - INFO - Exported train and test file path.
+[ 2025-10-24 00:13:00,455 ] 44 root - INFO - Data Ingestion completed and artifact: DataIngestionArtifact(trained_file_path='Artifacts\\10_24_2025_00_12_47\\data_ingestion\\ingested\\train.csv', test_file_path='Artifacts\\10_24_2025_00_12_47\\data_ingestion\\ingested\\test.csv')
+[ 2025-10-24 00:13:00,460 ] 54 root - INFO - Initiate the data Validation
+[ 2025-10-24 00:13:00,504 ] 32 root - INFO - Required number of columns:2
+[ 2025-10-24 00:13:00,504 ] 33 root - INFO - Data frame has columns:31
+[ 2025-10-24 00:13:00,504 ] 32 root - INFO - Required number of columns:2
+[ 2025-10-24 00:13:00,504 ] 33 root - INFO - Data frame has columns:31
+[ 2025-10-24 00:13:00,639 ] 63 root - INFO - Entered initiate_data_transformation method of DataTransformation class
+[ 2025-10-24 00:13:00,640 ] 65 root - INFO - Starting data transformation
+[ 2025-10-24 00:13:00,655 ] 48 root - INFO - Entered get_data_trnasformer_object method of Trnasformation class
+[ 2025-10-24 00:13:00,655 ] 53 root - INFO - Initialise KNNImputer with {'missing_values': nan, 'n_neighbors': 3, 'weights': 'uniform'}
+[ 2025-10-24 00:13:00,664 ] 46 root - INFO - Entered the save_object method of MainUtils class
+[ 2025-10-24 00:13:00,667 ] 50 root - INFO - Exited the save_object method of MainUtils class
+[ 2025-10-24 00:13:00,667 ] 46 root - INFO - Entered the save_object method of MainUtils class
+[ 2025-10-24 00:13:00,668 ] 50 root - INFO - Exited the save_object method of MainUtils class
+[ 2025-10-24 00:13:01,399 ] 45 root - INFO - ENABLE_DAGSHUB not set; skipping dagshub.init()
+[ 2025-10-24 00:13:01,401 ] 54 root - INFO - \u2705 ModelTrainer initialized successfully.
+[ 2025-10-24 00:13:01,401 ] 95 root - INFO - ModelTrainer instance type: <class 'networksecurity.components.model_trainer.ModelTrainer'>
+[ 2025-10-24 00:13:01,401 ] 98 root - INFO - ModelTrainer module: networksecurity.components.model_trainer
+[ 2025-10-24 00:13:01,401 ] 101 root - INFO - ModelTrainer implementation file: C:\Users\dwive\OneDrive\Desktop\INTERVIEW\projects\New folder\networksecurity\networksecurity\components\model_trainer.py
+[ 2025-10-24 00:13:01,401 ] 106 root - INFO - ModelTrainer available attributes: ['data_transformation_artifact', 'initiate_model_trainer', 'model_trainer_config', 'track_mlflow', 'train_model']
+[ 2025-10-24 00:16:13,045 ] 113 root - INFO - \u2705 Best Model Selected: Random Forest (score: 0.8796992605172258)

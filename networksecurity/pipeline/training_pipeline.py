@@ -7,7 +7,6 @@ from networksecurity.logging.logger import logging
 from networksecurity.components.data_ingestion import DataIngestion
 from networksecurity.components.data_validation import DataValidation
 from networksecurity.components.data_transformation import DataTransformation
-from networksecurity.components.model_trainer import ModelTrainer
 
 from networksecurity.entity.config_entity import(
     TrainingPipelineConfig,
@@ -69,10 +68,17 @@ class TrainingPipeline:
         except Exception as e:
             raise NetworkSecurityException(e,sys)
         
-    def start_model_trainer(self,data_transformation_artifact:DataTransformationArtifact)->ModelTrainerArtifact:
+    def start_model_trainer(self, data_transformation_artifact) -> ModelTrainerArtifact:
+        """
+        Instantiate ModelTrainer and run its training entrypoint.
+        This version emits diagnostics about the runtime object if the expected
+        method is missing, to help detect import/package collisions.
+        """
         try:
-            self.model_trainer_config: ModelTrainerConfig = ModelTrainerConfig(
-                training_pipeline_config=self.training_pipeline_config
+            from networksecurity.components.model_trainer import ModelTrainer  # ✅ move import here
+
+            self.model_trainer_config = ModelTrainerConfig(
+               training_pipeline_config=self.training_pipeline_config
             )
 
             model_trainer = ModelTrainer(
@@ -80,12 +86,57 @@ class TrainingPipeline:
                 model_trainer_config=self.model_trainer_config,
             )
 
+            # --- Diagnostic: log actual object/module/file and available attrs ---
+            try:
+                import inspect
+            except Exception:
+                inspect = None
+
+            logging.info(f"ModelTrainer instance type: {type(model_trainer)}")
+            try:
+                module_name = model_trainer.__class__.__module__
+                logging.info(f"ModelTrainer module: {module_name}")
+                module_obj = sys.modules.get(module_name)
+                module_file = getattr(module_obj, "__file__", None)
+                logging.info(f"ModelTrainer implementation file: {module_file}")
+            except Exception:
+                logging.info("Could not determine ModelTrainer implementation file.")
+
+            available_attrs = [a for a in dir(model_trainer) if not a.startswith("__")]
+            logging.info(f"ModelTrainer available attributes: {available_attrs}")
+            # -------------------------------------------------------------------
+    
+            # Ensure the expected entrypoint exists before calling it
+            if not hasattr(model_trainer, "initiate_model_trainer"):
+                # provide both required args to NetworkSecurityException (error_message, error_details)
+                raise NetworkSecurityException(
+                    f"ModelTrainer instance does not have 'initiate_model_trainer'. "
+                    f"Possible causes: wrong import path, package shadowing, or runtime rebind. "
+                    f"Available attributes on the instance: {available_attrs}. "
+                    f"ModelTrainer loaded from module: {model_trainer.__class__.__module__}",
+                    sys
+                )
+
+            # call the intended entrypoint
+            # Diagnostic check before calling initiate_model_trainer
+            if not hasattr(model_trainer, "initiate_model_trainer"):
+                try:
+                    raise Exception(
+                        "ModelTrainer instance does not have 'initiate_model_trainer'. "
+                        f"Loaded from module: {model_trainer.__class__.__module__}"
+                    )
+                except Exception as ex:
+                    raise NetworkSecurityException(ex, sys)
+
             model_trainer_artifact = model_trainer.initiate_model_trainer()
+
 
             return model_trainer_artifact
 
         except Exception as e:
+            # keep the repository's usual pattern for wrapping exceptions
             raise NetworkSecurityException(e, sys)
+
 
     ## local artifact is going to s3 bucket    
     def sync_artifact_dir_to_s3(self):
